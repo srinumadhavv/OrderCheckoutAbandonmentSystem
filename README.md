@@ -1,4 +1,4 @@
-# OrderCheckoutAbandonmentRecoverySystem
+# Order Checkout Abandonment Recovery System
 A Serverless implementation of Application to notify users about the items that are added to checkout screen but not yet ordered
 ## Problem Statement:
 
