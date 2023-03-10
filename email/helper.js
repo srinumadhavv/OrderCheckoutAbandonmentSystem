@@ -8,7 +8,7 @@ export const send_email = async (
   html
 ) => {
   const params = {
-    Source: "srinumadhavv@gmail.com",
+    Source: "srinumadhav36@gmail.com",
     Destination: {
       ToAddresses: [to]
     },
