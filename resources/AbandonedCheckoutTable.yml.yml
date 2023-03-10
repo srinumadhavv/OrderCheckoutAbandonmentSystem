@@ -1,0 +1,21 @@
+Type: AWS::DynamoDB::Table
+Properties:
+  TableName: AbandonedCheckoutTable
+  AttributeDefinitions:
+    - AttributeName: order_id
+      AttributeType: "S"
+    - AttributeName: email
+      AttributeType: "S"
+  KeySchema:
+    - AttributeName: order_id
+      KeyType: HASH
+    - AttributeName: email
+      KeyType: RANGE
+  ProvisionedThroughput:
+    ReadCapacityUnits: 1
+    WriteCapacityUnits: 1
+  TimeToLiveSpecification: # ttl definition
+    AttributeName: ttl
+    Enabled: true
+  StreamSpecification:
+    StreamViewType: NEW_IMAGE

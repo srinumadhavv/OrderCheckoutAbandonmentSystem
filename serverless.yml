@@ -1,0 +1,65 @@
+service: ghc
+
+package:
+  individually: true
+
+useDotenv: true
+
+custom:
+  serverless-offline-sqs-external:
+    autoCreate: true # create queue if not exists
+    apiVersion: '2012-11-05'
+    endpoint: 'http://localhost:4566'
+    region: us-east-1
+    accessKeyId: root
+    secretAccessKey: root
+    skipCacheInvalidation: false
+  
+plugins:
+  - serverless-offline
+  - serverless-offline-sqs-external
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: ${opt:stage, 'dev'}
+  region: ap-south-1
+  versionFunctions: false
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "sqs:*"
+        - "ses:*"
+        - "dynamodb:*"
+      Resource: "*"
+  environment:
+    REGION: ${self:provider.region}
+    STAGE: ${self:provider.stage}
+    NOTIFICATION_1_TIME_INTERVAL: 10
+    NOTIFICATION_2_TIME_INTERVAL: 86400 
+    NOTIFICATION_3_TIME_INTERVAL: 259200
+functions:
+  api:
+    handler: api/index.handler
+    events:
+      - http:
+          path: /api
+          method: ANY
+          cors: ${file(./resources/CORSHeaders.yml)}
+      - http:
+          path: /api/{proxy+}
+          method: ANY
+          cors: ${file(./resources/CORSHeaders.yml)}
+  EmailSender:
+    handler: email/index.handler
+    events:
+      - stream:
+          filterPatterns:
+            - eventName: [REMOVE]
+          type: dynamodb
+          arn:
+            Fn::GetAtt: [AbandonedCheckoutTable, StreamArn]
+          batchSize: 1
+resources:
+  Resources:
+    AbandonedCheckoutTable: ${file(./resources/AbandonedCheckoutTable.yml.yml)}

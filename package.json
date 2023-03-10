@@ -1,0 +1,28 @@
+{
+    "name": "ghc-application",
+    "version": "1.0.0",
+    "description": "",
+    "type": "module",
+    "module": "commonjs",
+    "scripts": {
+        "offline": "sls offline",
+        "prettier-format": "prettier --config .prettierrc.json --write */*.ts"
+    },
+    "dependencies": {
+        "aws-sdk": "^2.1331.0",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "dynamoose": "^3.1.0",
+        "express": "^4.17.1",
+        "express-validator": "^6.14.2",
+        "request_trimmer": "^1.0.0",
+        "serverless": "^3.0.0",
+        "serverless-http": "^2.7.0"
+    },
+    "devDependencies": {
+        "prettier": "2.2.1",
+        "serverless-offline": "^8.8.0",
+        "serverless-offline-sqs-external": "^1.0.6"
+    }
+}
